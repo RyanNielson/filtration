@@ -22,6 +22,11 @@ function filt_init(){
 	register_setting('filt_plugin_options', 'filt_options');
 }
 
+add_action( 'plugins_loaded', 'filt_filter' );
+function filt_filter() {
+	$options = get_option('filt_options');
+}
+
 function filt_render_options_page() {
 	?>
 
