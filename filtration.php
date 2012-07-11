@@ -125,7 +125,7 @@ function filt_filter_text($text) {
 	// Replace non-strict keywords
 	foreach($nonstrict_replacement_keywords as $keyword) {
 		$replacement = str_repeat($filter_character, strlen($keyword));
-    	$text = str_ireplace_nonstrict($keyword, $replacement, $text);
+		$text = str_ireplace_nonstrict($keyword, $replacement, $text);
 	}
    
     return $text;
