@@ -5,7 +5,7 @@ Plugin Name: Filtration
 Plugin URI: https://github.com/RyanNielson/filtration
 Description: Filters out user-defined words from your site.
 Version: 1.0
-Author: RyanNielson
+Author: Ryan Nielson
 Author URI: https://github.com/RyanNielson
 */
 
