@@ -13,7 +13,6 @@ Author URI: https://github.com/RyanNielson
 add_action('admin_menu', 'rn_filt_add_options_page');
 add_action('plugins_loaded', 'rn_filt_add_filters');
 add_action('admin_init', 'rn_filt_init');
-add_action('plugins_loaded', 'rn_filt_filter');
 register_uninstall_hook(__FILE__, 'rn_filt_delete_options');
 
 function rn_filt_add_options_page() {
@@ -72,10 +71,6 @@ function rn_filt_settings_cleaner($in) {
     return $out;
 }
 
-
-function rn_filt_filter() {
-    $options = get_option('filt_options');
-}
 
 function filt_render_options_page() {
     ?>
