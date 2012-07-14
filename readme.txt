@@ -14,6 +14,7 @@ Remove any unwanted words from your page/post titles, content, and comments.
 Filtration allows you to filter out any keywords you wish, and replace them with any specified character. This allows you to remove profanity, or any other content automatically from titles, content and comments. 
 
 You can choose which WordPress elements to filter, including:
+
 * Post/Page Titles
 * Post/Page Content
 * Comments
