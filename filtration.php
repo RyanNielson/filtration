@@ -9,21 +9,21 @@ Author: Ryan Nielson
 Author URI: https://github.com/RyanNielson
 */
 
-add_action('admin_menu', 'filt_add_options_page');
-add_action('plugins_loaded', 'filt_add_filters');
-add_action('admin_init', 'filt_init');
-add_action('plugins_loaded', 'filt_filter');
-register_uninstall_hook(__FILE__, 'filt_delete_options');
+add_action('admin_menu', 'rn_filt_add_options_page');
+add_action('plugins_loaded', 'rn_filt_add_filters');
+add_action('admin_init', 'rn_filt_init');
+add_action('plugins_loaded', 'rn_filt_filter');
+register_uninstall_hook(__FILE__, 'rn_filt_delete_options');
 
-function filt_add_options_page() {
+function rn_filt_add_options_page() {
     add_options_page('Filtration Options', 'Filtration', 'manage_options', __FILE__, 'filt_render_options_page');
 }
 
-function filt_init() {
+function rn_filt_init() {
     register_setting('filt_plugin_options', 'filt_options');
 }
 
-function filt_filter() {
+function rn_filt_filter() {
     $options = get_option('filt_options');
 }
 
@@ -91,7 +91,7 @@ function filt_render_options_page() {
     <?php   
 }
 
-function filt_add_filters() {
+function rn_filt_add_filters() {
     $options = get_option('filt_options');
     
     if (isset($options['filter_post_content']) && $options['filter_post_content'] == '1')
@@ -125,7 +125,7 @@ function filt_filter_text($text) {
     // Replace non-strict keywords
     foreach($nonstrict_replacement_keywords as $keyword) {
         $replacement = str_repeat($filter_character, strlen($keyword));
-        $text = str_ireplace_nonstrict($keyword, $replacement, $text);
+        $text = rn_filt_str_ireplace_nonstrict($keyword, $replacement, $text);
     }
    
     return $text;
@@ -135,11 +135,11 @@ function filt_trim_keywords(&$item) {
     $item = trim($item);
 }
 
-function filt_delete_options() {
+function rn_filt_delete_options() {
     delete_option('filt_options');
 }
 
 // Replace the haystack with the replacement if the needle is on its own.
-function str_ireplace_nonstrict($needle, $replacement, $haystack) {
+function rn_filt_str_ireplace_nonstrict($needle, $replacement, $haystack) {
     return preg_replace("/\b$needle\b/i", $replacement, $haystack);
 }
