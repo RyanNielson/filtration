@@ -73,15 +73,17 @@ function rn_filt_settings_cleaner($in) {
 
 
 function filt_render_options_page() {
+    $options = get_option('filt_options');
+    $non_strict = isset($options['filter_nonstrict_keywords']) ? $options['filter_nonstrict_keywords'] : '';
+    $strict = isset($options['filter_strict_keywords']) ? $options['filter_strict_keywords'] : '';
+    $filter_char = isset($options['filter_character']) ? $options['filter_character'] : '';
     ?>
-
     <div class="wrap">
         <?php screen_icon(); ?>
         <h2><?php esc_html_e('Filtration Options', 'filtration'); ?></h2>
 
         <form method="post" action="options.php">
             <?php settings_fields('filt_plugin_options'); ?>
-            <?php $options = get_option('filt_options'); print_r($options); ?>
             <table class="form-table">
                 <tr>
                     <th scope="row">
@@ -92,7 +94,7 @@ function filt_render_options_page() {
                         </span>
                     </th>
                     <td>
-                        <textarea name="filt_options[filter_nonstrict_keywords]" rows="10" cols="60"><?php echo $options['filter_nonstrict_keywords']; ?></textarea>
+                        <textarea name="filt_options[filter_nonstrict_keywords]" rows="10" cols="60"><?php echo esc_textarea($non_strict); ?></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -104,7 +106,7 @@ function filt_render_options_page() {
                         </span>
                     </th>
                     <td>
-                        <textarea name="filt_options[filter_strict_keywords]" rows="10" cols="60"><?php echo $options['filter_strict_keywords']; ?></textarea><br />
+                        <textarea name="filt_options[filter_strict_keywords]" rows="10" cols="60"><?php echo esc_textarea($strict); ?></textarea><br />
                     </td>
                 </tr>
                 <tr valign="top">
@@ -132,7 +134,7 @@ function filt_render_options_page() {
                         </span>
                     </th>
                     <td>
-                        <input name="filt_options[filter_character]" type="text" value="<?php if (isset($options['filter_character'])) { echo $options['filter_character']; } ?>" /> 
+                        <input name="filt_options[filter_character]" type="text" value="<?php echo esc_attr($filter_char); ?>" />
                     </td>
                 </tr>
             </table>
