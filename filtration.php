@@ -76,7 +76,7 @@ function filt_render_options_page() {
     ?>
 
     <div class="wrap">
-        <div class="icon32" id="icon-options-general"><br></div>
+        <?php screen_icon(); ?>
         <h2><?php esc_html_e('Filtration Options', 'filtration'); ?></h2>
 
         <form method="post" action="options.php">
