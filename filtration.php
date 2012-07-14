@@ -197,5 +197,9 @@ function rn_filt_delete_options() {
 
 // Replace the haystack with the replacement if the needle is on its own.
 function rn_filt_str_ireplace_nonstrict($needle, $replacement, $haystack) {
-    return preg_replace("/\b$needle\b/i", $replacement, $haystack);
+    return preg_replace(
+        sprintf('/\b%s\b/i', preg_quote($needle, '/')),
+        $replacement,
+        $haystack
+    );
 }
