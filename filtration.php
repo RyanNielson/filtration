@@ -44,7 +44,7 @@ function rn_filt_settings_cleaner($in) {
     $kws = array('filter_nonstrict_keywords', 'filter_strict_keywords');
     foreach($kws as $kw) {
         if(isset($in[$kw])) {
-            $kw_arr = explode(',', $kw);
+            $kw_arr = explode(',', $in[$kw]);
             array_walk($kw_arr, 'esc_attr');
             array_walk($kw_arr, 'trim');
             $out[$kw] = implode(',', $kw_arr);
@@ -81,7 +81,7 @@ function filt_render_options_page() {
 
         <form method="post" action="options.php">
             <?php settings_fields('filt_plugin_options'); ?>
-            <?php $options = get_option('filt_options'); ?>
+            <?php $options = get_option('filt_options'); print_r($options); ?>
             <table class="form-table">
                 <tr>
                     <th scope="row">
