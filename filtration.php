@@ -20,8 +20,8 @@ function rn_filt_add_options_page() {
         __('Filtration Options', 'filtration'), 
         __('Filtration', 'filtration'),
         'manage_options',
-        __FILE__,
-        'filt_render_options_page'
+        'filtration-options',
+        'rn_filt_render_options_page'
     );
 }
 
@@ -72,7 +72,7 @@ function rn_filt_settings_cleaner($in) {
 }
 
 
-function filt_render_options_page() {
+function rn_filt_render_options_page() {
     $options = get_option('filt_options');
     $non_strict = isset($options['filter_nonstrict_keywords']) ? $options['filter_nonstrict_keywords'] : '';
     $strict = isset($options['filter_strict_keywords']) ? $options['filter_strict_keywords'] : '';
