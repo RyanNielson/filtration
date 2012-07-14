@@ -27,8 +27,51 @@ function rn_filt_add_options_page() {
 }
 
 function rn_filt_init() {
-    register_setting('filt_plugin_options', 'filt_options');
+    register_setting(
+        'filt_plugin_options',
+        'filt_options',
+        'rn_filt_settings_cleaner'
+    );
 }
+
+/**
+ * Settings validation function.  This is passed as the third argument of 
+ * `register_setting`.  You can make sure all your options are okay here
+ */
+function rn_filt_settings_cleaner($in) {
+    $out = array();
+
+    // keywords options
+    $kws = array('filter_nonstrict_keywords', 'filter_strict_keywords');
+    foreach($kws as $kw) {
+        if(isset($in[$kw])) {
+            $kw_arr = explode(',', $kw);
+            array_walk($kw_arr, 'esc_attr');
+            array_walk($kw_arr, 'trim');
+            $out[$kw] = implode(',', $kw_arr);
+        } else {
+            $out[$kw] = '';
+        }
+    }
+
+    // checkboxes
+    $checks = array(
+        'filter_post_title',
+        'filter_post_content',
+        'filter_comments'
+    );
+    foreach($checks as $c) {
+        $out[$c] = isset($in[$c]) && $in[$c] ? 1 : 0;
+    }
+
+    // make sure the filter character is one character
+    if(isset($in['filter_character'])) {
+        $out['filter_character'] = esc_attr(substr($in['filter_character'], 0, 1));
+    }
+
+    return $out;
+}
+
 
 function rn_filt_filter() {
     $options = get_option('filt_options');
