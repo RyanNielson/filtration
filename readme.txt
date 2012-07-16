@@ -37,5 +37,11 @@ This section describes how to install Filtration.
 
 == Changelog ==
 
+= 1.1 =
+* Reorganized code to prevent bad interactions with user code.
+* Input now sanitized.
+* Text validation now checks input to see if it matches required format.
+* A few speed improvements and bug fixes.
+
 = 1.0 =
 * Added filtration of comments, titles and content.
