@@ -10,26 +10,26 @@ Author: Ryan Nielson
 Author URI: https://github.com/RyanNielson
 */
 
-add_action('admin_menu', 'rn_filt_add_options_page');
-add_action('plugins_loaded', 'rn_filt_add_filters');
-add_action('admin_init', 'rn_filt_init');
-register_uninstall_hook(__FILE__, 'rn_filt_delete_options');
+add_action('admin_menu', 'filt_add_options_page');
+add_action('plugins_loaded', 'filt_add_filters');
+add_action('admin_init', 'filt_init');
+register_uninstall_hook(__FILE__, 'filt_delete_options');
 
-function rn_filt_add_options_page() {
+function filt_add_options_page() {
     add_options_page(
         __('Filtration Options', 'filtration'), 
         __('Filtration', 'filtration'),
         'manage_options',
         'filtration-options',
-        'rn_filt_render_options_page'
+        'filt_render_options_page'
     );
 }
 
-function rn_filt_init() {
+function filt_init() {
     register_setting(
         'filt_plugin_options',
         'filt_options',
-        'rn_filt_settings_cleaner'
+        'filt_settings_cleaner'
     );
 }
 
@@ -37,7 +37,7 @@ function rn_filt_init() {
  * Settings validation function.  This is passed as the third argument of 
  * `register_setting`.  You can make sure all your options are okay here
  */
-function rn_filt_settings_cleaner($in) {
+function filt_settings_cleaner($in) {
     $out = array();
 
     // keywords options
@@ -72,7 +72,7 @@ function rn_filt_settings_cleaner($in) {
 }
 
 
-function rn_filt_render_options_page() {
+function filt_render_options_page() {
     $options = get_option('filt_options');
     $non_strict = isset($options['filter_nonstrict_keywords']) ? $options['filter_nonstrict_keywords'] : '';
     $strict = isset($options['filter_strict_keywords']) ? $options['filter_strict_keywords'] : '';
@@ -147,7 +147,7 @@ function rn_filt_render_options_page() {
     <?php   
 }
 
-function rn_filt_add_filters() {
+function filt_add_filters() {
     $options = get_option('filt_options');
     
     if (isset($options['filter_post_content']) && $options['filter_post_content'] == '1')
@@ -181,7 +181,7 @@ function filt_filter_text($text) {
     // Replace non-strict keywords
     foreach($nonstrict_replacement_keywords as $keyword) {
         $replacement = str_repeat($filter_character, strlen($keyword));
-        $text = rn_filt_str_ireplace_nonstrict($keyword, $replacement, $text);
+        $text = filt_str_ireplace_nonstrict($keyword, $replacement, $text);
     }
    
     return $text;
@@ -191,12 +191,12 @@ function filt_trim_keywords(&$item) {
     $item = trim($item);
 }
 
-function rn_filt_delete_options() {
+function filt_delete_options() {
     delete_option('filt_options');
 }
 
 // Replace the haystack with the replacement if the needle is on its own.
-function rn_filt_str_ireplace_nonstrict($needle, $replacement, $haystack) {
+function filt_str_ireplace_nonstrict($needle, $replacement, $haystack) {
     return preg_replace(
         sprintf('/\b%s\b/i', preg_quote($needle, '/')),
         $replacement,
