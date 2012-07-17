@@ -37,6 +37,9 @@ This section describes how to install Filtration.
 
 == Changelog ==
 
+= 1.2.1 =
+* Slight bug fixes and code tweaks.
+
 = 1.2 =
 * Added the ability to have the replacement character replace all characters in a filtered word, or the entire word.
 
