@@ -192,6 +192,7 @@ class WPFiltration
 		$strict_replacement_keywords = array_unique( $strict_replacement_keywords );
 		$nonstrict_replacement_keywords = array_unique( $nonstrict_replacement_keywords );
 
+		// Sort the array by length so that shorter keywords don't replace keywords in filter character.
 		usort($strict_replacement_keywords, array( $this, 'sort_array_by_string_length' ));
 		
 		// Replace strict keywords.
