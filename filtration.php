@@ -71,7 +71,8 @@ class WPFiltration
 		$checks = array(
 			'filter_post_title',
 			'filter_post_content',
-			'filter_comments'
+			'filter_comments',
+			'filter_character_replace_all'
 		);
 		foreach( $checks as $c ) {
 			$out[$c] = isset( $in[$c] ) && $in[$c] ? 1 : 0;
@@ -79,7 +80,7 @@ class WPFiltration
 
 		// make sure the filter character is one character
 		if( isset($in['filter_character']) ) {
-			$out['filter_character'] = esc_attr( substr( $in['filter_character'], 0, 1 ) );
+			$out['filter_character'] = esc_attr( $in['filter_character'] );
 		}
 
 		return $out;
@@ -140,15 +141,19 @@ class WPFiltration
 						</td>
 					</tr>
 					<tr>
-					<th scope="row">
-							<?php esc_html_e( 'Filter Character', 'filtration' ); ?>
+						<th scope="row">
+							<?php esc_html_e( 'Filter Replacement Text', 'filtration' ); ?>
 							<br/>
 							<span class="description">
-								<?php esc_html_e( 'The character that will replace the letters in the filtered word.', 'filtration' ); ?>
+								<?php esc_html_e( 'The text that will replace the letters in the filtered word, or the entire filtered word.', 'filtration' ); ?>
 							</span>
 						</th>
 						<td>
-							<input name="filt_options[filter_character]" type="text" value="<?php echo esc_attr( $filter_char ); ?>" />
+							<input name="filt_options[filter_character]" type="text" value="<?php echo esc_attr( $filter_char ); ?>" /> 
+							<br/>
+							<input id="filter-character-checkbox" name="filt_options[filter_character_replace_all]" type="checkbox" value="1" <?php if ( isset( $options['filter_character_replace_all'] ) ) { checked( '1', $options['filter_character_replace_all'] ); } ?> /> 
+							<label for="filter-character-checkbox"><?php esc_html_e( 'Use the filter replacement text to replace an entire filtered word, rather than each individual character.', 'filtration' ); ?></label>
+							<br />
 						</td>
 					</tr>
 				</table>
@@ -176,6 +181,7 @@ class WPFiltration
 		$options = get_option('filt_options');
 
 		$filter_character = $options['filter_character'];
+		$filter_character_replace_all = $options['filter_character_replace_all'];
 		$strict_replacement_keywords = explode( ',', $options['filter_strict_keywords'] );
 		$nonstrict_replacement_keywords = explode( ',', $options['filter_nonstrict_keywords'] );
 
@@ -186,15 +192,23 @@ class WPFiltration
 		$strict_replacement_keywords = array_unique( $strict_replacement_keywords );
 		$nonstrict_replacement_keywords = array_unique( $nonstrict_replacement_keywords );
 
+		usort($strict_replacement_keywords, array( $this, 'sort_array_by_string_length' ));
+		
 		// Replace strict keywords.
 		foreach( $strict_replacement_keywords as $keyword ) {
-			$replacement = str_repeat( $filter_character, strlen( $keyword ) );
+			if ($filter_character_replace_all == 1)
+				$replacement = $filter_character;
+			else
+				$replacement = str_repeat( $filter_character, strlen( $keyword ) );
 			$text = str_ireplace( $keyword, $replacement, $text );
 		}
 
 		// Replace non-strict keywords
 		foreach( $nonstrict_replacement_keywords as $keyword ) {
-			$replacement = str_repeat( $filter_character, strlen( $keyword ) );
+			if ($filter_character_replace_all == 1)
+				$replacement = $filter_character;
+			else
+				$replacement = str_repeat( $filter_character, strlen( $keyword ) );
 			$text = $this->str_ireplace_nonstrict( $keyword, $replacement, $text );
 		}
 	   
@@ -216,6 +230,10 @@ class WPFiltration
 			$replacement,
 			$haystack
 		);
+	}
+
+	function sort_array_by_string_length($a, $b) {
+		return strlen($a) - strlen($b);
 	}
 }
 
